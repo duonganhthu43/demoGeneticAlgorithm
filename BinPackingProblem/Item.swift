@@ -7,7 +7,7 @@
 //
 
 import Foundation
-public class Item {
+public struct Item {
     init(width: Int, height: Int, name: String) {
         self.width = width
         self.height = height

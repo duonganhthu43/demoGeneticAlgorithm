@@ -86,7 +86,7 @@ class GeneticProcess {
             population.sort { (l, r) -> Bool in
                 l.Fitness > r.Fitness
             }
-            population.suffix(2 * population[0].items.count)
+            population = Array(population.suffix(2 * population[0].items.count))
             print("VALUE: ", endCondition)
             print("FITNESS " , population[0].Fitness)
             print("AREA " , population[0].Area)
@@ -137,34 +137,72 @@ class GeneticProcess {
         let randomPosition2 = Demo.generateRandom(lim: parent1.count - 1, exclude: [0, parent1.count, randomPosition1 ])
         let start = min(randomPosition1, randomPosition2)
         let end = max(randomPosition1, randomPosition2)
+        var p1 = parent1.map{ Int($0)!}
+        var p2 = parent2.map{ Int($0)!}
+        var offstring1 = Array(repeating: -1, count: p1.count)
+        var offstring2 = Array(repeating: -1, count: p1.count)
+        var replacement1: [Int] = Array(repeating: -1, count: p1.count)
+        var replacement2: [Int] = Array(repeating: -1, count: p1.count)
+
+
+        for i in start...end {
+            offstring1[i] = p2[i]
+            offstring2[i] = p1[i]
+            replacement1[p2[i]] = p1[i]
+            replacement2[p1[i]] = p2[i]
+        }
+        
+        for i in 0..<parent1.count {
+            if i < start || i > end {
+                var n1 = p1[i]
+                var m1 = replacement1[n1]
+                
+                var n2 = p2[i];
+                var m2 = replacement2[n2]
+                
+                while m1 != -1 {
+                    n1 = m1
+                    m1 = replacement1[m1]
+                }
+                while m2 != -1 {
+                    n2 = m2
+                    m2 = replacement2[m2]
+                }
+                
+                offstring1[i] = n1
+                offstring2[i] = n2
+            }
+        }
+        return ( offstring1.map { String(format: "%d", $0)}, offstring2.map { String(format: "%d", $0)})
+        
         //let start = 3
         //let end = 5
         //child 1 get subString Parent 2 ,child 2 get substring parent 1
-        var subArray1 = parent2[start...end ] // child 1
-        var subArray2 = parent1[start...end] // child 2
-        var child1 = parent1[0..<start] +  subArray1 + parent1[(end+1)..<parent1.count]
-        var child2 = parent2[0..<start] + subArray2 + parent2[(end+1)..<parent1.count]
-        for i in start...end {
-            let value1 = subArray1[i]
-            let value2 = subArray2[i]
-            if value1 == value2 { continue }
-            if subArray2.contains(value1) && subArray1.contains(value2) { continue}
-            // find index in child1 == value1
-            if let indexHead = parent1[0...start].index(of: value1) {
-                child1[indexHead] = value2
-            }
-            if let indexTail = parent1[end...parent1.count - 1].index(of: value1) {
-                child1[indexTail] = value2
-            }
-            // find index in child2 == value2
-            if let indexHead = parent2[0...start].index(of: value2) {
-                child2[indexHead] = value1
-            }
-            if let indexTail = parent2[end...parent1.count - 1].index(of: value2) {
-                child2[indexTail] = value1
-            }
-        }
-        return (Array(child1),Array(child2))
+//        var subArray1 = parent2[start...end ] // child 1
+//        var subArray2 = parent1[start...end] // child 2
+//        var child1 = parent1[0..<start] +  subArray1 + parent1[(end+1)..<parent1.count]
+//        var child2 = parent2[0..<start] + subArray2 + parent2[(end+1)..<parent1.count]
+//        for i in start...end {
+//            let value1 = subArray1[i]
+//            let value2 = subArray2[i]
+//            if value1 == value2 { continue }
+//            if subArray2.contains(value1) && subArray1.contains(value2) { continue}
+//            // find index in child1 == value1
+//            if let indexHead = parent1[0...start].index(of: value1) {
+//                child1[indexHead] = value2
+//            }
+//            if let indexTail = parent1[end...parent1.count - 1].index(of: value1) {
+//                child1[indexTail] = value2
+//            }
+//            // find index in child2 == value2
+//            if let indexHead = parent2[0...start].index(of: value2) {
+//                child2[indexHead] = value1
+//            }
+//            if let indexTail = parent2[end...parent1.count - 1].index(of: value2) {
+//                child2[indexTail] = value1
+//            }
+//        }
+//        return (Array(child1),Array(child2))
     }
 }
 

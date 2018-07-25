@@ -18,7 +18,17 @@ public class Chromosome {
     private var indexPart: [String]
     private var operatorPart: [OperatorToken]
     public var Expression: [String] {
-        return Demo.correctExpression(input: constructExpression())
+        let correctExp = Demo.correctExpression(input: constructExpression())
+        self.indexPart = correctExp.filter({ (str) -> Bool in
+            return Int(str) != nil
+        })
+        operatorPart = []
+        for i in 0..<correctExp.count {
+            if Int(correctExp[i]) == nil {
+                operatorPart.append(OperatorToken(idx: i, opt: OperatorType(rawValue: correctExp[i])!))
+            }
+        }
+        return correctExp
     }
     
     public var Area: Int {
@@ -59,23 +69,15 @@ public class Chromosome {
         let randomNumber = Demo.generateRandom(lim: 3)
         switch randomNumber {
         case 0 :
-            print(" ")
-            print("Mutation rotateItem : ", self.Expression)
             rotateItem()
             return self
         case 1:
-            print(" ")
-            print("Mutation randomExchange : ", self.Expression)
             randomExchange()
             return self
         case 2:
-            print(" ")
-            print("Mutation moveOpt : ", self.Expression)
             moveOpt()
             return self
         default:
-            print(" ")
-            print("Mutation complementOpt : ", self.Expression)
             complementOpt()
             return self
         }
@@ -105,16 +107,17 @@ public class Chromosome {
         var myExp = self.Expression
         // randome pick operator
         let randomIndex = Demo.generateRandom(lim: self.operatorPart.count - 1)
-        let myopt = self.operatorPart[randomIndex]
+        let myopt = self.operatorPart.sorted(by: { (l, r) -> Bool in
+            return l.index < r.index
+        })[randomIndex]
         let randomPosition = Demo.generateRandom(lim: myExp.count - 1)
         if randomPosition < myopt.index {
+            myExp.remove(at:  myopt.index)
             myExp.insert(myopt.operatorType.rawValue, at: randomPosition)
-            myExp.remove(at:  myopt.index + 1)
         } else {
             myExp.insert(myopt.operatorType.rawValue, at: randomPosition)
             myExp.remove(at:  myopt.index)
         }
-        
         myExp = Demo.correctExpression(input: myExp)
         // part back to data
         self.indexPart = myExp.filter({ (str) -> Bool in
