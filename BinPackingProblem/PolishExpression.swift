@@ -170,6 +170,9 @@ class Chromosome {
 }
 
 class GeneticProcess {
+    private static let CrossOverRate = 0.3
+    private static let MutationRate = 0.7
+    private var population: [Chromosome] = []
     init(items: [Item]) {
         // init population: 2* size of items
         let populationSize = 2 * items.count
@@ -183,12 +186,17 @@ class GeneticProcess {
         
     }
     func execute() {
-        for i in 0..<population.count {
-            print("VALUE: ", i)
-            print("FITNESS " , population[i].Fitness)
-            print("AREA " , population[i].Area)
-            print("")
-        }
+        
+//        for i in 0..<population.count {
+//            print("VALUE: ", i)
+//            print("FITNESS " , population[i].Fitness)
+//            print("AREA " , population[i].Area)
+//            print("")
+//        }
+    }
+    
+    func evolvePopulation() {
+        
     }
     
     static func pmxCrossOver(parent1: [String], parent2: [String]) -> ([String], [String]) {
@@ -226,7 +234,6 @@ class GeneticProcess {
         }
         return (Array(child1),Array(child2))
     }
-    private var population: [Chromosome] = []
 }
 
 
