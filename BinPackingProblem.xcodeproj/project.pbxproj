@@ -1,0 +1,401 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6CDE70DE2104C14300D54A6D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDE70DD2104C14300D54A6D /* AppDelegate.swift */; };
+		6CDE70E02104C14300D54A6D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDE70DF2104C14300D54A6D /* ViewController.swift */; };
+		6CDE70E22104C14400D54A6D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6CDE70E12104C14400D54A6D /* Assets.xcassets */; };
+		6CDE70E52104C14400D54A6D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6CDE70E32104C14400D54A6D /* Main.storyboard */; };
+		6CDE70EE2104C8DC00D54A6D /* PolishExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDE70ED2104C8DC00D54A6D /* PolishExpression.swift */; };
+		D02494D6D425F41354538F67 /* Pods_BinPackingProblem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50739226800747ABE575E2B8 /* Pods_BinPackingProblem.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		24355CA1225302A68EBD2FD9 /* Pods-BinPackingProblem.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BinPackingProblem.release.xcconfig"; path = "Pods/Target Support Files/Pods-BinPackingProblem/Pods-BinPackingProblem.release.xcconfig"; sourceTree = "<group>"; };
+		50739226800747ABE575E2B8 /* Pods_BinPackingProblem.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BinPackingProblem.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6CDE70DA2104C14300D54A6D /* BinPackingProblem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BinPackingProblem.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6CDE70DD2104C14300D54A6D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		6CDE70DF2104C14300D54A6D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		6CDE70E12104C14400D54A6D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6CDE70E42104C14400D54A6D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		6CDE70E62104C14400D54A6D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6CDE70E72104C14400D54A6D /* BinPackingProblem.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BinPackingProblem.entitlements; sourceTree = "<group>"; };
+		6CDE70ED2104C8DC00D54A6D /* PolishExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolishExpression.swift; sourceTree = "<group>"; };
+		83ADEE97B30053704F9BE2ED /* Pods-BinPackingProblem.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BinPackingProblem.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BinPackingProblem/Pods-BinPackingProblem.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6CDE70D72104C14300D54A6D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D02494D6D425F41354538F67 /* Pods_BinPackingProblem.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		68BE746289F50B8C868F1EA8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				83ADEE97B30053704F9BE2ED /* Pods-BinPackingProblem.debug.xcconfig */,
+				24355CA1225302A68EBD2FD9 /* Pods-BinPackingProblem.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		6CDE70D12104C14300D54A6D = {
+			isa = PBXGroup;
+			children = (
+				6CDE70DC2104C14300D54A6D /* BinPackingProblem */,
+				6CDE70DB2104C14300D54A6D /* Products */,
+				68BE746289F50B8C868F1EA8 /* Pods */,
+				8E2AABAD5A38D78AE2F6DD4E /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		6CDE70DB2104C14300D54A6D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6CDE70DA2104C14300D54A6D /* BinPackingProblem.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6CDE70DC2104C14300D54A6D /* BinPackingProblem */ = {
+			isa = PBXGroup;
+			children = (
+				6CDE70DD2104C14300D54A6D /* AppDelegate.swift */,
+				6CDE70DF2104C14300D54A6D /* ViewController.swift */,
+				6CDE70E12104C14400D54A6D /* Assets.xcassets */,
+				6CDE70E32104C14400D54A6D /* Main.storyboard */,
+				6CDE70E62104C14400D54A6D /* Info.plist */,
+				6CDE70E72104C14400D54A6D /* BinPackingProblem.entitlements */,
+				6CDE70ED2104C8DC00D54A6D /* PolishExpression.swift */,
+			);
+			path = BinPackingProblem;
+			sourceTree = "<group>";
+		};
+		8E2AABAD5A38D78AE2F6DD4E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				50739226800747ABE575E2B8 /* Pods_BinPackingProblem.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6CDE70D92104C14300D54A6D /* BinPackingProblem */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6CDE70EA2104C14400D54A6D /* Build configuration list for PBXNativeTarget "BinPackingProblem" */;
+			buildPhases = (
+				30F0E132123F872A3EE8075D /* [CP] Check Pods Manifest.lock */,
+				6CDE70D62104C14300D54A6D /* Sources */,
+				6CDE70D72104C14300D54A6D /* Frameworks */,
+				6CDE70D82104C14300D54A6D /* Resources */,
+				5DE10ABEF4862A40F46D6C42 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BinPackingProblem;
+			productName = BinPackingProblem;
+			productReference = 6CDE70DA2104C14300D54A6D /* BinPackingProblem.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6CDE70D22104C14300D54A6D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0940;
+				LastUpgradeCheck = 0940;
+				ORGANIZATIONNAME = anhthu;
+				TargetAttributes = {
+					6CDE70D92104C14300D54A6D = {
+						CreatedOnToolsVersion = 9.4.1;
+					};
+				};
+			};
+			buildConfigurationList = 6CDE70D52104C14300D54A6D /* Build configuration list for PBXProject "BinPackingProblem" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 6CDE70D12104C14300D54A6D;
+			productRefGroup = 6CDE70DB2104C14300D54A6D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6CDE70D92104C14300D54A6D /* BinPackingProblem */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6CDE70D82104C14300D54A6D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6CDE70E22104C14400D54A6D /* Assets.xcassets in Resources */,
+				6CDE70E52104C14400D54A6D /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		30F0E132123F872A3EE8075D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BinPackingProblem-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5DE10ABEF4862A40F46D6C42 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-BinPackingProblem/Pods-BinPackingProblem-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/PureLayout/PureLayout.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PureLayout.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BinPackingProblem/Pods-BinPackingProblem-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6CDE70D62104C14300D54A6D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6CDE70EE2104C8DC00D54A6D /* PolishExpression.swift in Sources */,
+				6CDE70E02104C14300D54A6D /* ViewController.swift in Sources */,
+				6CDE70DE2104C14300D54A6D /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		6CDE70E32104C14400D54A6D /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6CDE70E42104C14400D54A6D /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		6CDE70E82104C14400D54A6D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		6CDE70E92104C14400D54A6D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		6CDE70EB2104C14400D54A6D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 83ADEE97B30053704F9BE2ED /* Pods-BinPackingProblem.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = BinPackingProblem/BinPackingProblem.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 9WEEDS67XS;
+				INFOPLIST_FILE = BinPackingProblem/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.demo.BinPackingProblem;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+			};
+			name = Debug;
+		};
+		6CDE70EC2104C14400D54A6D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 24355CA1225302A68EBD2FD9 /* Pods-BinPackingProblem.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = BinPackingProblem/BinPackingProblem.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 9WEEDS67XS;
+				INFOPLIST_FILE = BinPackingProblem/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.demo.BinPackingProblem;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6CDE70D52104C14300D54A6D /* Build configuration list for PBXProject "BinPackingProblem" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6CDE70E82104C14400D54A6D /* Debug */,
+				6CDE70E92104C14400D54A6D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6CDE70EA2104C14400D54A6D /* Build configuration list for PBXNativeTarget "BinPackingProblem" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6CDE70EB2104C14400D54A6D /* Debug */,
+				6CDE70EC2104C14400D54A6D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6CDE70D22104C14300D54A6D /* Project object */;
+}
