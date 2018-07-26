@@ -19,17 +19,6 @@ public enum MutationType {
     case ComplimentOpt
 }
 
-class Item {
-    init(width: Int, height: Int, name: String) {
-        self.width = width
-        self.height = height
-        self.name = name
-    }
-    let name: String
-    var width: Int
-    var height: Int
-}
-
 class OperatorToken {
     var index: Int
     var operatorType: OperatorType
@@ -39,140 +28,15 @@ class OperatorToken {
     }
 }
 
-class Chromosome {
-    private var items: [Item]
-    private var indexPart: [String]
-    private var operatorPart: [OperatorToken]
-    public var Expression: [String] {
-        return constructExpression()
-    }
-    
-    public var Area: Int {
-        let boundingRect = getBoundingRect()
-        return calculateArea(item: boundingRect)
-    }
-    
-    public var Fitness: Float {
-        return fitness()
-    }
-    
-    init(exp: [String], items: [Item]) {
-        self.items = items
-        self.indexPart = exp.filter({ (str) -> Bool in
-            return Int(str) != nil
-        })
-        operatorPart = []
-        for i in 0..<exp.count {
-            if Int(exp[i]) == nil {
-                operatorPart.append(OperatorToken(idx: i, opt: OperatorType(rawValue: exp[i])!))
-            }
-        }
-    }
-    
-    private func rotateItem(with index: Int ) {
-        guard index < items.count, index > -1 else { return }
-        let height = items[index].height
-        items[index].height = items[index].width
-        items[index].width = height
-    }
-    
-    private func randomExchange() {
-        let fromIdx = Demo.generateRandom(lim: indexPart.count - 1)
-        let toIdx = Demo.generateRandom(lim: indexPart.count - 1, exclude: [fromIdx])
-        let from = indexPart[fromIdx]
-        let to = indexPart[toIdx]
-        let temp = from
-        self.indexPart[fromIdx] = to
-        self.indexPart[toIdx] = temp
-    }
-    
-    private func moveOpt() {
-        // construct expression
-        var myExp = self.Expression
-        // randome pick operator
-        let randomIndex = Demo.generateRandom(lim: self.operatorPart.count - 1)
-        let myopt = self.operatorPart[randomIndex]
-        let randomPosition = Demo.generateRandom(lim: myExp.count - 1)
-        if randomPosition < myopt.index {
-            myExp.insert(myopt.operatorType.rawValue, at: randomPosition)
-            myExp.remove(at:  myopt.index + 1)
-        } else {
-            myExp.insert(myopt.operatorType.rawValue, at: randomPosition)
-            myExp.remove(at:  myopt.index)
-        }
-        
-        myExp = Demo.correctExpression(input: myExp)
-        // part back to data
-        self.indexPart = myExp.filter({ (str) -> Bool in
-            return Int(str) != nil
-        })
-        operatorPart = []
-        for i in 0..<myExp.count {
-            if Int(myExp[i]) == nil {
-                operatorPart.append(OperatorToken(idx: i, opt: OperatorType(rawValue: myExp[i])!))
-            }
-        }
-    }
-    
-    private func complementOpt() {
-        // randome pick operator
-        let randomIndex = Demo.generateRandom(lim: self.operatorPart.count - 1)
-        let myopt = self.operatorPart[randomIndex]
-        self.operatorPart[randomIndex].operatorType = myopt.operatorType == OperatorType.Horizontal ? .Vertical : .Horizontal
-    }
-    
-    private func constructExpression() -> [String] {
-     var myIndexPart = self.indexPart
-        for i in 0..<self.operatorPart.count {
-            let opt = self.operatorPart[i]
-            myIndexPart.insert(opt.operatorType.rawValue, at: opt.index)
-        }
-     return myIndexPart
-    }
-    
-    private func getBoundingRect() -> Item {
-        let expression = Expression
-        var stack = Stack<Item>()
-        for i in 0..<expression.count {
-            if let itemIndex = Int(expression[i]) {
-                stack.push(items[itemIndex])
-            } else {
-                let item2 = stack.pop()
-                let item1 = stack.pop()
-                if expression[i] == "V" {
-                    stack.push(Item(width: max(item1!.width, item2!.width), height: item1!.height + item2!.height, name: item1!.name + item2!.name))
-                } else {
-                    stack.push(Item(width: item1!.width + item2!.width, height: max(item1!.height, item2!.height), name: item1!.name + item2!.name))
-                }
-            }
-        }
-        return stack.top!
-    }
-    
-    private func calculateArea(item: Item) -> Int {
-        return item.height * item.width
-    }
-    
-    private func penalty(item: Item)-> Int {
-        let AAR = 1.2
-        let width = item.width
-        let height = item.height
-        if Double(width/height) > AAR || Double(width/height) < 1/AAR {
-            return (width - height) * (width - height);
-        }
-        return 0
-    }
-    
-    private func fitness() -> Float {
-        let boundingRect = getBoundingRect()
-        return 1000000.0/Float((calculateArea(item: boundingRect) + penalty(item: boundingRect)))
-    }
-}
+
 
 class GeneticProcess {
-    private static let CrossOverRate = 0.3
-    private static let MutationRate = 0.7
+    private static let mutationRate = 0.7
+    private static let crossoverRate = 0.3
+    private static let tournamentSize = 5
     private var population: [Chromosome] = []
+    
+
     init(items: [Item]) {
         // init population: 2* size of items
         let populationSize = 2 * items.count
@@ -186,17 +50,85 @@ class GeneticProcess {
         
     }
     func execute() {
+        var  endCondition = 400
+        while endCondition > 0 {
+            // Selection
+            // CROSS OVER: Ex Selection using Tournament
+            var newChild: [Chromosome] = []
+            let countJoinCrossOver = Int(Double(population.count) * GeneticProcess.crossoverRate)
+            for _ in 0..<countJoinCrossOver {
+                let parent1 = GeneticProcess.tournamentSelection(population: population)
+                let parent2 = GeneticProcess.tournamentSelection(population: population)
+                let result =  parent1.crossover(with: parent2)
+                newChild.append(result.0)
+                newChild.append(result.1)
+            }
+            // mutation
+            //validate before mutation
+            for i in 0..<newChild.count {
+                let isError = !Demo.validateExpression(input: newChild[i].Expression)
+                let countArray: [Int] = newChild[i].IndexPart.map{Int($0)!}.unique
+                if isError || countArray.count < newChild[0].items.count {
+                    print("WRONG : ", newChild[i].Expression.joined(separator: " "))
+                }
+            }
+            
+            for i in 0..<newChild.count {
+                let r = CGFloat.random()
+                if r < 0.7 {
+                   newChild[i] = newChild[i].mutation()
+                    if !Demo.validateExpression(input: newChild[i].Expression) {
+                        print("WRONG : ", newChild[i].Expression.joined(separator: " "))
+                    }
+                }
+            }
+            population.append(contentsOf: newChild)
+            population.sort { (l, r) -> Bool in
+                l.Fitness > r.Fitness
+            }
+            population = Array(population.suffix(2 * population[0].items.count))
+            print("VALUE: ", endCondition)
+            print("FITNESS " , population[0].Fitness)
+            print("AREA " , population[0].Area)
+            print("")
+            endCondition = endCondition - 1
+        }
         
-//        for i in 0..<population.count {
-//            print("VALUE: ", i)
-//            print("FITNESS " , population[i].Fitness)
-//            print("AREA " , population[i].Area)
-//            print("")
-//        }
     }
     
-    func evolvePopulation() {
-        
+    static func tournamentSelection(population: [Chromosome]) -> Chromosome {
+        // get random
+        var currentPop = population
+        var lstCompetitor: [Chromosome] = []
+        while lstCompetitor.count < tournamentSize {
+            currentPop = currentPop.shuffled()
+            let randomIndex = Demo.generateRandom(lim: currentPop.count - 1)
+            let selected = currentPop[randomIndex]
+            if !lstCompetitor.contains(where: { (select) -> Bool in
+                return select.Expression == selected.Expression
+            }) {
+                lstCompetitor.append(selected)
+            }
+        }
+        return  lstCompetitor.sorted { (left, right) -> Bool in
+            left.Fitness > right.Fitness
+        }[0]
+    }
+    
+    static func uniformCrossOver(parent1: [OperatorToken], parent2: [OperatorToken]) -> ([OperatorToken], [OperatorToken]) {
+        var child1: [OperatorToken] = []
+        var child2: [OperatorToken] = []
+        for i in 0..<parent1.count {
+            let r = CGFloat.random()
+            if r < 0.5 {
+                child1.append(parent1[i])
+                child2.append(parent2[i])
+            } else {
+                child1.append(parent2[i])
+                child2.append(parent1[i])
+            }
+        }
+        return (Array(child1),Array(child2))
     }
     
     static func pmxCrossOver(parent1: [String], parent2: [String]) -> ([String], [String]) {
@@ -205,34 +137,72 @@ class GeneticProcess {
         let randomPosition2 = Demo.generateRandom(lim: parent1.count - 1, exclude: [0, parent1.count, randomPosition1 ])
         let start = min(randomPosition1, randomPosition2)
         let end = max(randomPosition1, randomPosition2)
+        var p1 = parent1.map{ Int($0)!}
+        var p2 = parent2.map{ Int($0)!}
+        var offstring1 = Array(repeating: -1, count: p1.count)
+        var offstring2 = Array(repeating: -1, count: p1.count)
+        var replacement1: [Int] = Array(repeating: -1, count: p1.count)
+        var replacement2: [Int] = Array(repeating: -1, count: p1.count)
+
+
+        for i in start...end {
+            offstring1[i] = p2[i]
+            offstring2[i] = p1[i]
+            replacement1[p2[i]] = p1[i]
+            replacement2[p1[i]] = p2[i]
+        }
+        
+        for i in 0..<parent1.count {
+            if i < start || i > end {
+                var n1 = p1[i]
+                var m1 = replacement1[n1]
+                
+                var n2 = p2[i];
+                var m2 = replacement2[n2]
+                
+                while m1 != -1 {
+                    n1 = m1
+                    m1 = replacement1[m1]
+                }
+                while m2 != -1 {
+                    n2 = m2
+                    m2 = replacement2[m2]
+                }
+                
+                offstring1[i] = n1
+                offstring2[i] = n2
+            }
+        }
+        return ( offstring1.map { String(format: "%d", $0)}, offstring2.map { String(format: "%d", $0)})
+        
         //let start = 3
         //let end = 5
         //child 1 get subString Parent 2 ,child 2 get substring parent 1
-        var subArray1 = parent2[start...end ] // child 1
-        var subArray2 = parent1[start...end] // child 2
-        var child1 = parent1[0..<start] +  subArray1 + parent1[(end+1)..<parent1.count]
-        var child2 = parent2[0..<start] + subArray2 + parent2[(end+1)..<parent1.count]
-        for i in start...end {
-            let value1 = subArray1[i]
-            let value2 = subArray2[i]
-            if value1 == value2 { continue }
-            if subArray2.contains(value1) || subArray1.contains(value2) { continue}
-            // find index in child1 == value1
-            if let indexHead = parent1[0...start].index(of: value1) {
-                child1[indexHead] = value2
-            }
-            if let indexTail = parent1[end...parent1.count - 1].index(of: value1) {
-                child1[indexTail] = value2
-            }
-            // find index in child2 == value2
-            if let indexHead = parent2[0...start].index(of: value2) {
-                child2[indexHead] = value1
-            }
-            if let indexTail = parent2[end...parent1.count - 1].index(of: value2) {
-                child2[indexTail] = value1
-            }
-        }
-        return (Array(child1),Array(child2))
+//        var subArray1 = parent2[start...end ] // child 1
+//        var subArray2 = parent1[start...end] // child 2
+//        var child1 = parent1[0..<start] +  subArray1 + parent1[(end+1)..<parent1.count]
+//        var child2 = parent2[0..<start] + subArray2 + parent2[(end+1)..<parent1.count]
+//        for i in start...end {
+//            let value1 = subArray1[i]
+//            let value2 = subArray2[i]
+//            if value1 == value2 { continue }
+//            if subArray2.contains(value1) && subArray1.contains(value2) { continue}
+//            // find index in child1 == value1
+//            if let indexHead = parent1[0...start].index(of: value1) {
+//                child1[indexHead] = value2
+//            }
+//            if let indexTail = parent1[end...parent1.count - 1].index(of: value1) {
+//                child1[indexTail] = value2
+//            }
+//            // find index in child2 == value2
+//            if let indexHead = parent2[0...start].index(of: value2) {
+//                child2[indexHead] = value1
+//            }
+//            if let indexTail = parent2[end...parent1.count - 1].index(of: value2) {
+//                child2[indexTail] = value1
+//            }
+//        }
+//        return (Array(child1),Array(child2))
     }
 }
 
@@ -370,6 +340,18 @@ extension Array {
     mutating func rearrange(from: Int, to: Int) {
         precondition(from != to && indices.contains(from) && indices.contains(to), "invalid indexes")
         insert(remove(at: from), at: to)
+    }
+}
+
+extension Array where Element : Equatable {
+    var unique: [Element] {
+        var uniqueValues: [Element] = []
+        forEach { item in
+            if !uniqueValues.contains(item) {
+                uniqueValues += [item]
+            }
+        }
+        return uniqueValues
     }
 }
 

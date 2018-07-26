@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BinPackingProblem/ViewController.swift"
-            timestampString = "554206197.731967"
+            timestampString = "554241119.059347"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "73"
@@ -26,7 +26,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BinPackingProblem/ViewController.swift"
-            timestampString = "554206197.732031"
+            timestampString = "554241119.059673"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "56"
@@ -41,8 +41,8 @@
                   symbolName = "BinPackingProblem.ViewController.viewDidLoad() -&gt; ()"
                   moduleName = "BinPackingProblem"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/anhthu/Downloads/BinPackingProblem/BinPackingProblem/BinPackingProblem/ViewController.swift"
-                  timestampString = "554206198.2264529"
+                  urlString = "file:///Users/anhthu/Documents/DemoGeneticAlgorithm/demoGeneticAlgorithm/BinPackingProblem/ViewController.swift"
+                  timestampString = "554241119.3797179"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "56"
@@ -56,8 +56,8 @@
                   symbolName = "closure #2 (BinPackingProblem.Item) -&gt; __ObjC.NSView in BinPackingProblem.ViewController.viewDidLoad() -&gt; ()"
                   moduleName = "BinPackingProblem"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/anhthu/Downloads/BinPackingProblem/BinPackingProblem/BinPackingProblem/ViewController.swift"
-                  timestampString = "554206198.229542"
+                  urlString = "file:///Users/anhthu/Documents/DemoGeneticAlgorithm/demoGeneticAlgorithm/BinPackingProblem/ViewController.swift"
+                  timestampString = "554241119.381332"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "56"
@@ -74,12 +74,108 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BinPackingProblem/ViewController.swift"
-            timestampString = "554206197.732079"
+            timestampString = "554241119.05989"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "52"
             endingLineNumber = "52"
             landmarkName = "viewDidLoad()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BinPackingProblem/PolishExpression.swift"
+            timestampString = "554241119.06012"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
+            landmarkName = "execute()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BinPackingProblem/PolishExpression.swift"
+            timestampString = "554241119.0604089"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "72"
+            endingLineNumber = "72"
+            landmarkName = "execute()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BinPackingProblem/PolishExpression.swift"
+            timestampString = "554241119.060653"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
+            landmarkName = "execute()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BinPackingProblem/PolishExpression.swift"
+            timestampString = "554241119.06085"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "94"
+            endingLineNumber = "94"
+            landmarkName = "execute()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BinPackingProblem/PolishExpression.swift"
+            timestampString = "554241119.061044"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "68"
+            endingLineNumber = "68"
+            landmarkName = "execute()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BinPackingProblem/PolishExpression.swift"
+            timestampString = "554241119.061235"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "76"
+            endingLineNumber = "76"
+            landmarkName = "execute()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
