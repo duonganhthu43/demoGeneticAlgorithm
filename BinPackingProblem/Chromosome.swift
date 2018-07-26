@@ -7,7 +7,11 @@
 //
 
 import Foundation
-public class Chromosome {
+public class Chromosome: Equatable {
+    public static func == (lhs: Chromosome, rhs: Chromosome) -> Bool {
+        return lhs.Expression == rhs.Expression && lhs.Area == rhs.Area
+    }
+    
     var items: [Item]
     var IndexPart: [String] {
         return indexPart
@@ -34,6 +38,11 @@ public class Chromosome {
     public var Area: Int {
         let boundingRect = getBoundingRect()
         return calculateArea(item: boundingRect)
+    }
+    
+    public var Size: (Int,Int) {
+        let boundingRect = getBoundingRect()
+        return (boundingRect.width, boundingRect.height)
     }
     
     public var Fitness: Float {

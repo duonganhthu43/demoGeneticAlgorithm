@@ -26,7 +26,7 @@ class ChromosomePresentView: NSView {
         self.chromosome = chromosome
         backgroundColor = NSColor.white
         self.layer?.borderWidth = 0.5
-        self.layer?.borderColor = CGColor.black
+        self.layer?.borderColor = NSColor.black.withAlphaComponent(0.5).cgColor
     }
     
     override public func draw(_ dirtyRect: NSRect) {
@@ -55,6 +55,7 @@ class ChromosomePresentView: NSView {
             }
         }
         let finalStackView = stack.top
+        finalStackView?.backgroundColor = NSColor.clear
          addSubview(finalStackView!)
         NSLayoutConstraint.autoCreateAndInstallConstraints {
             //finalStackView?.autoCenterInSuperview()

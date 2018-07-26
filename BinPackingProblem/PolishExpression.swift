@@ -68,6 +68,7 @@ class GeneticProcess {
             }
         }
         population.append(contentsOf: newChild)
+        population = population.unique
         population.sort { (l, r) -> Bool in
             l.Fitness > r.Fitness
         }
