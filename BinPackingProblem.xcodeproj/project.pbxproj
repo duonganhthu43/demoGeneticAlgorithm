@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6C329E3321096C2A007795AA /* ChromosomePresentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C329E3221096C2A007795AA /* ChromosomePresentViewController.swift */; };
+		6C329E36210976FF007795AA /* InputPresentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C329E35210976FF007795AA /* InputPresentView.swift */; };
+		6C329E382109AB5E007795AA /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C329E372109AB5E007795AA /* CustomView.swift */; };
 		6CD232DE2108B4E2003CE1EA /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD232DD2108B4E2003CE1EA /* Item.swift */; };
 		6CD232E02108B528003CE1EA /* Chromosome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD232DF2108B528003CE1EA /* Chromosome.swift */; };
 		6CDE70DE2104C14300D54A6D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDE70DD2104C14300D54A6D /* AppDelegate.swift */; };
@@ -20,6 +23,9 @@
 /* Begin PBXFileReference section */
 		24355CA1225302A68EBD2FD9 /* Pods-BinPackingProblem.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BinPackingProblem.release.xcconfig"; path = "Pods/Target Support Files/Pods-BinPackingProblem/Pods-BinPackingProblem.release.xcconfig"; sourceTree = "<group>"; };
 		50739226800747ABE575E2B8 /* Pods_BinPackingProblem.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BinPackingProblem.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6C329E3221096C2A007795AA /* ChromosomePresentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChromosomePresentViewController.swift; sourceTree = "<group>"; };
+		6C329E35210976FF007795AA /* InputPresentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputPresentView.swift; sourceTree = "<group>"; };
+		6C329E372109AB5E007795AA /* CustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomView.swift; sourceTree = "<group>"; };
 		6CD232DD2108B4E2003CE1EA /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		6CD232DF2108B528003CE1EA /* Chromosome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chromosome.swift; sourceTree = "<group>"; };
 		6CDE70DA2104C14300D54A6D /* BinPackingProblem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BinPackingProblem.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,6 +83,8 @@
 			children = (
 				6CDE70DD2104C14300D54A6D /* AppDelegate.swift */,
 				6CDE70DF2104C14300D54A6D /* ViewController.swift */,
+				6C329E3221096C2A007795AA /* ChromosomePresentViewController.swift */,
+				6C329E35210976FF007795AA /* InputPresentView.swift */,
 				6CDE70E12104C14400D54A6D /* Assets.xcassets */,
 				6CDE70E32104C14400D54A6D /* Main.storyboard */,
 				6CDE70E62104C14400D54A6D /* Info.plist */,
@@ -84,6 +92,7 @@
 				6CDE70ED2104C8DC00D54A6D /* PolishExpression.swift */,
 				6CD232DD2108B4E2003CE1EA /* Item.swift */,
 				6CD232DF2108B528003CE1EA /* Chromosome.swift */,
+				6C329E372109AB5E007795AA /* CustomView.swift */,
 			);
 			path = BinPackingProblem;
 			sourceTree = "<group>";
@@ -190,10 +199,12 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-BinPackingProblem/Pods-BinPackingProblem-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/PureLayout/PureLayout.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PureLayout.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -207,8 +218,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C329E3321096C2A007795AA /* ChromosomePresentViewController.swift in Sources */,
+				6C329E382109AB5E007795AA /* CustomView.swift in Sources */,
 				6CD232DE2108B4E2003CE1EA /* Item.swift in Sources */,
 				6CD232E02108B528003CE1EA /* Chromosome.swift in Sources */,
+				6C329E36210976FF007795AA /* InputPresentView.swift in Sources */,
 				6CDE70EE2104C8DC00D54A6D /* PolishExpression.swift in Sources */,
 				6CDE70E02104C14300D54A6D /* ViewController.swift in Sources */,
 				6CDE70DE2104C14300D54A6D /* AppDelegate.swift in Sources */,

@@ -1,16 +1,20 @@
 PODS:
   - PureLayout (3.0.2)
+  - RxSwift (4.1.2)
 
 DEPENDENCIES:
   - PureLayout
+  - RxSwift
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - PureLayout
+    - RxSwift
 
 SPEC CHECKSUMS:
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
+  RxSwift: e49536837d9901277638493ea537394d4b55f570
 
-PODFILE CHECKSUM: b70fe29ff76aa33bb5dab0595399d16b7410a639
+PODFILE CHECKSUM: 864dcc1edf90cff9071165a71fbfd6d933cb9fa9
 
 COCOAPODS: 1.5.3

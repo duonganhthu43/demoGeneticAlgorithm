@@ -34,7 +34,7 @@ class GeneticProcess {
     private static let mutationRate = 0.7
     private static let crossoverRate = 0.3
     private static let tournamentSize = 5
-    private var population: [Chromosome] = []
+    var population: [Chromosome] = []
     
 
     init(items: [Item]) {
@@ -47,7 +47,32 @@ class GeneticProcess {
         population.sort { (left, right) -> Bool in
            return left.Fitness > right.Fitness
         }
-        
+    }
+    
+    func executeSingleRound()-> [Chromosome] {
+        // CROSS OVER: Ex Selection using Tournament
+        var newChild: [Chromosome] = []
+        let countJoinCrossOver = Int(Double(population.count) * GeneticProcess.crossoverRate)
+        for _ in 0..<countJoinCrossOver {
+            let parent1 = GeneticProcess.tournamentSelection(population: population)
+            let parent2 = GeneticProcess.tournamentSelection(population: population)
+            let result =  parent1.crossover(with: parent2)
+            newChild.append(result.0)
+            newChild.append(result.1)
+        }
+        // mutation
+        for i in 0..<newChild.count {
+            let r = CGFloat.random()
+            if r < 0.7 {
+                newChild[i] = newChild[i].mutation()
+            }
+        }
+        population.append(contentsOf: newChild)
+        population.sort { (l, r) -> Bool in
+            l.Fitness > r.Fitness
+        }
+        population = Array(population[0...(2*population[0].items.count)])
+        return population
     }
     func execute() {
         var  endCondition = 400
@@ -200,7 +225,7 @@ class Demo {
     func generateItems(quantity: Int) -> [Item] {
         var result: [Item] = []
         for i in 0..<quantity {
-            let item = Item(width: Int(arc4random_uniform(UInt32(100))) + 1, height:  Int(arc4random_uniform(UInt32(100))) + 1, name: String(format: "item %d", i))
+            let item = Item(width: Int(arc4random_uniform(UInt32(100))) + 1, height:  Int(arc4random_uniform(UInt32(100))) + 1, name: String(format: "item %d", i), color: CGColor(red: .random(), green: .random(), blue: .random(), alpha: 1))
             result.append(item)
         }
         return result
