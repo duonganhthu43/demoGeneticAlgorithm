@@ -64,36 +64,23 @@ class GeneticProcess {
                 newChild.append(result.1)
             }
             // mutation
-            //validate before mutation
-            for i in 0..<newChild.count {
-                let isError = !Demo.validateExpression(input: newChild[i].Expression)
-                let countArray: [Int] = newChild[i].IndexPart.map{Int($0)!}.unique
-                if isError || countArray.count < newChild[0].items.count {
-                    print("WRONG : ", newChild[i].Expression.joined(separator: " "))
-                }
-            }
-            
             for i in 0..<newChild.count {
                 let r = CGFloat.random()
                 if r < 0.7 {
                    newChild[i] = newChild[i].mutation()
-                    if !Demo.validateExpression(input: newChild[i].Expression) {
-                        print("WRONG : ", newChild[i].Expression.joined(separator: " "))
-                    }
                 }
             }
             population.append(contentsOf: newChild)
             population.sort { (l, r) -> Bool in
                 l.Fitness > r.Fitness
             }
-            population = Array(population.suffix(2 * population[0].items.count))
+            population = Array(population[0...(2*population[0].items.count)])
             print("VALUE: ", endCondition)
             print("FITNESS " , population[0].Fitness)
             print("AREA " , population[0].Area)
             print("")
             endCondition = endCondition - 1
         }
-        
     }
     
     static func tournamentSelection(population: [Chromosome]) -> Chromosome {
@@ -139,14 +126,14 @@ class GeneticProcess {
         let end = max(randomPosition1, randomPosition2)
         var p1 = parent1.map{ Int($0)!}
         var p2 = parent2.map{ Int($0)!}
-        var offstring1 = Array(repeating: -1, count: p1.count)
+        var offspring1 = Array(repeating: -1, count: p1.count)
         var offstring2 = Array(repeating: -1, count: p1.count)
         var replacement1: [Int] = Array(repeating: -1, count: p1.count)
         var replacement2: [Int] = Array(repeating: -1, count: p1.count)
 
 
         for i in start...end {
-            offstring1[i] = p2[i]
+            offspring1[i] = p2[i]
             offstring2[i] = p1[i]
             replacement1[p2[i]] = p1[i]
             replacement2[p1[i]] = p2[i]
@@ -169,11 +156,11 @@ class GeneticProcess {
                     m2 = replacement2[m2]
                 }
                 
-                offstring1[i] = n1
+                offspring1[i] = n1
                 offstring2[i] = n2
             }
         }
-        return ( offstring1.map { String(format: "%d", $0)}, offstring2.map { String(format: "%d", $0)})
+        return (offspring1.map { String(format: "%d", $0)}, offstring2.map { String(format: "%d", $0)})
         
         //let start = 3
         //let end = 5

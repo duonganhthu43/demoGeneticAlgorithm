@@ -8,12 +8,14 @@
 
 import Foundation
 public struct Item {
-    init(width: Int, height: Int, name: String) {
+    init(width: Int, height: Int, name: String, color: CGColor) {
         self.width = width
         self.height = height
         self.name = name
+        self.color = color
     }
     let name: String
+    let color: CGColor
     var width: Int
     var height: Int
 }

@@ -148,6 +148,7 @@ public class Chromosome {
     }
     
     private func getBoundingRect() -> Item {
+        let items = self.items
         let expression = Expression
         var stack = Stack<Item>()
         for i in 0..<expression.count {
