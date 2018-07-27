@@ -39,10 +39,13 @@ class GeneticProcess {
     var population: [Chromosome] = []
     private var populationSubject: PublishSubject<[Chromosome]> = PublishSubject()
     private var mutationsSubject: PublishSubject<[Chromosome]> = PublishSubject()
-    private var mutationLog: PublishSubject<String> = PublishSubject()
+
+    private var bestChromosomeSubject: PublishSubject<Chromosome> = PublishSubject()
+
+    private var logWriterPublisher: PublishSubject<String> = PublishSubject()
     
-    public var mutationLogDriver: Driver<String> {
-        return mutationLog.asDriver(onErrorJustReturn: "ERROR ")
+    public var logWriterDriver: Driver<String> {
+        return logWriterPublisher.asDriver(onErrorJustReturn: "ERROR ")
     }
 
     public var mutationsDriver: Driver<[Chromosome]> {
@@ -54,22 +57,37 @@ class GeneticProcess {
     
 
     init(items: [Item]) {
-        let populationSize = 2 * items.count
+        updateItem(input: items)
+//        let populationSize = 2 * items.count
+//        for _ in 0..<populationSize {
+//            population.append(Chromosome(exp: Demo.generateExpression(quantity: items.count), items: items))
+//        }
+//        // sort population by finessValue
+//        population.sort { (left, right) -> Bool in
+//           return left.Fitness > right.Fitness
+//        }
+//        populationSubject.onNext(population)
+    }
+    
+    func updateItem(input: [Item]) {
+        let populationSize = 2 * input.count
+        population = []
         for _ in 0..<populationSize {
-            population.append(Chromosome(exp: Demo.generateExpression(quantity: items.count), items: items))
+            population.append(Chromosome(exp: Utilities.generateExpression(quantity: input.count), items: input))
         }
         // sort population by finessValue
         population.sort { (left, right) -> Bool in
-           return left.Fitness > right.Fitness
+            return left.Fitness > right.Fitness
         }
         populationSubject.onNext(population)
     }
     
     func executeSingleRound()-> [Chromosome] {
         // CROSS OVER: Ex Selection using Tournament
+        logWriterPublisher.onNext(String(format: "\n START \n"))
         var newChild: [Chromosome] = []
         let countJoinCrossOver = Int(Double(population.count) * GeneticProcess.crossoverRate)
-        for _ in 0..<countJoinCrossOver {
+        for i in 0..<countJoinCrossOver {
             let parent1 = GeneticProcess.tournamentSelection(population: population)
             let parent2 = GeneticProcess.tournamentSelection(population: population)
             let result =  parent1.crossover(with: parent2)
@@ -80,7 +98,7 @@ class GeneticProcess {
         for i in 0..<newChild.count {
             let r = CGFloat.random()
             if r < 0.7 {
-                newChild[i] = newChild[i].mutation(logWriter: mutationLog)
+                newChild[i] = newChild[i].mutation(logWriter: logWriterPublisher)
             }
         }
         newChild.sort { (l, r) -> Bool in
@@ -96,8 +114,14 @@ class GeneticProcess {
         }
         population = Array(population[0...(2*population[0].items.count)])
         populationSubject.onNext(population)
+        logWriterPublisher.onNext(String(format: "BEST CHROMOSOME : %@ \n", population[0].Expression.joined(separator: " ")))
+        logWriterPublisher.onNext(String(format: "FITNESS : %f \n", population[0].Fitness))
+        logWriterPublisher.onNext(String(format: "AREA : %d \n", population[0].Area))
+        logWriterPublisher.onNext(String(format: "SIZE : width %d  height %d \n", population[0].OriginalSize.0, population[0].OriginalSize.1))
+        logWriterPublisher.onNext(String(format: "\n END \n"))
         return population
     }
+    
     func execute() {
         var  endCondition = 400
         while endCondition > 0 {
@@ -116,7 +140,7 @@ class GeneticProcess {
             for i in 0..<newChild.count {
                 let r = CGFloat.random()
                 if r < 0.7 {
-                   newChild[i] = newChild[i].mutation(logWriter: mutationLog)
+                   newChild[i] = newChild[i].mutation(logWriter: logWriterPublisher)
                 }
             }
             population.append(contentsOf: newChild)
@@ -139,7 +163,7 @@ class GeneticProcess {
         var lstCompetitor: [Chromosome] = []
         while lstCompetitor.count < tournamentSize {
             currentPop = currentPop.shuffled()
-            let randomIndex = Demo.generateRandom(lim: currentPop.count - 1)
+            let randomIndex = Utilities.generateRandom(lim: currentPop.count - 1)
             let selected = currentPop[randomIndex]
             if !lstCompetitor.contains(where: { (select) -> Bool in
                 return select.Expression == selected.Expression
@@ -170,8 +194,8 @@ class GeneticProcess {
     
     static func pmxCrossOver(parent1: [String], parent2: [String]) -> ([String], [String]) {
         // randomly choose range
-        let randomPosition1 = Demo.generateRandom(lim: parent1.count - 1, exclude: [0, parent1.count])
-        let randomPosition2 = Demo.generateRandom(lim: parent1.count - 1, exclude: [0, parent1.count, randomPosition1 ])
+        let randomPosition1 = Utilities.generateRandom(lim: parent1.count - 1, exclude: [0, parent1.count])
+        let randomPosition2 = Utilities.generateRandom(lim: parent1.count - 1, exclude: [0, parent1.count, randomPosition1 ])
         let start = min(randomPosition1, randomPosition2)
         let end = max(randomPosition1, randomPosition2)
         var p1 = parent1.map{ Int($0)!}
@@ -243,160 +267,6 @@ class GeneticProcess {
     }
 }
 
-
-
-class Demo {
-    let items: [Item] = []
-    func generateItems(quantity: Int) -> [Item] {
-        var result: [Item] = []
-        for i in 0..<quantity {
-            let item = Item(width: Int(arc4random_uniform(UInt32(100))) + 1, height:  Int(arc4random_uniform(UInt32(100))) + 1, name: String(format: "item %d", i), color: CGColor(red: .random(), green: .random(), blue: .random(), alpha: 1))
-            result.append(item)
-        }
-        return result
-    }
-    static func generateRandom(lim: Int, exclude: [Int]? = nil) -> Int {
-        let random = Int(arc4random_uniform(UInt32(lim)))
-        if let excludeNumbers = exclude, excludeNumbers.contains(random) {
-            return generateRandom(lim: lim, exclude: exclude)
-        }
-        return random
-    }
-    
-    static func generateExpression(quantity: Int) -> [String] {
-        var result:[String] = []
-        let itemByString = (0..<quantity).map{ String(format: "%d", $0)}
-        var lstOperator: [String] = (0..<quantity - 1).map{ _ in Utilities.randomOperator() }
-        lstOperator.append(contentsOf: itemByString)
-        result = lstOperator.shuffled()
-        return  correctExpression(input: result)
-    }
-    
-    static func validateExpression(input: [String]) -> Bool {
-        var stack = Stack<String>()
-        for i in 0..<input.count {
-            if Int(input[i]) != nil {
-                stack.push(input[i])
-            } else {
-                guard stack.count > 1 else { return false }
-                let _ = stack.pop()
-                let _ = stack.pop()
-                stack.push(input[i])
-            }
-        }
-        return stack.count == 1
-    }
-    
-    static func correctExpression(input: [String]) -> [String] {
-        guard  !Demo.validateExpression(input: input) else {
-            return input
-        }
-        var result = input
-        var operatorCount = 0
-        var operandCount = 0
-        for i in 0..<result.count {
-            if Int(result[i]) != nil {
-                operandCount = operandCount + 1
-            } else {
-                operatorCount = operatorCount + 1
-            }
-            if operatorCount > operandCount - 1 {
-                // if operator , find nearest operand and swap
-                if Int(result[i]) == nil {
-                    for j in i..<result.count {
-                        if Int(result[j]) != nil {
-                            result.insert(result[j], at: i)
-                            result.remove(at: j + 1)
-                            operatorCount = operatorCount - 1
-                            operandCount = operandCount + 1
-                            break
-                        }
-                    }
-                }
-            }
-            
-        }
-        return result
-    }
-}
-
-class Utilities {
-    static func randomOperator() -> String {
-        let opts = ["V", "H"]
-        return opts[Int(arc4random_uniform(UInt32(opts.count)))]
-    }
-}
-
-public struct Stack<T> {
-    fileprivate var array = [T]()
-    
-    public var isEmpty: Bool {
-        return array.isEmpty
-    }
-    
-    public var count: Int {
-        return array.count
-    }
-    
-    public mutating func push(_ element: T) {
-        array.append(element)
-    }
-    
-    public mutating func pop() -> T? {
-        return array.popLast()
-    }
-    
-    public var top: T? {
-        return array.last
-    }
-}
-
-extension MutableCollection {
-    /// Shuffles the contents of this collection.
-    mutating func shuffle() {
-        let c = count
-        guard c > 1 else { return }
-        for (firstUnshuffled, unshuffledCount) in zip(indices, stride(from: c, to: 1, by: -1)) {
-            let d: Int = numericCast(arc4random_uniform(numericCast(unshuffledCount)))
-            let i = index(firstUnshuffled, offsetBy: d)
-            swapAt(firstUnshuffled, i)
-        }
-    }
-}
-
-extension Sequence {
-    /// Returns an array with the contents of this sequence, shuffled.
-    func shuffled() -> [Element] {
-        var result = Array(self)
-        result.shuffle()
-        return result
-    }
-}
-
-extension Array {
-    mutating func rearrange(from: Int, to: Int) {
-        precondition(from != to && indices.contains(from) && indices.contains(to), "invalid indexes")
-        insert(remove(at: from), at: to)
-    }
-}
-
-extension Array where Element : Equatable {
-    var unique: [Element] {
-        var uniqueValues: [Element] = []
-        forEach { item in
-            if !uniqueValues.contains(item) {
-                uniqueValues += [item]
-            }
-        }
-        return uniqueValues
-    }
-}
-
-extension CGFloat {
-    static func random() -> CGFloat {
-        return CGFloat(arc4random()) / CGFloat(UInt32.max)
-    }
-}
 
 
 

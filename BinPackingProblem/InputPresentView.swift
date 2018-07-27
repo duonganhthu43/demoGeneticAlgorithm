@@ -13,6 +13,11 @@ import RxSwift
 public class InputPresentView: NSView {
     private var items: [Item] = []
 
+    func setItem(input: [Item]) {
+        self.items = input
+        self.subviews.removeAll()
+        draw(CGRect.zero)
+    }
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = NSColor(cgColor: CGColor.clear)
@@ -31,9 +36,9 @@ public class InputPresentView: NSView {
         var viewItems  = items.map{ NSView(frame: CGRect(x: 0, y: 0, width: $0.width, height: $0.height))}
         for i in 0..<viewItems.count {
             viewItems[i].backgroundColor = NSColor(cgColor: items[i].color!)
-            viewItems[i].autoSetDimensions(to: CGSize(width: items[i].width*2, height: items[i].height*2))
+            viewItems[i].autoSetDimensions(to: CGSize(width: items[i].width, height: items[i].height))
         }
-        let label = NSTextField(string: "INPUT")
+        let label = NSTextField(string: "")
         label.isEditable = false
         label.drawsBackground = false
         label.isBordered = false
@@ -44,9 +49,6 @@ public class InputPresentView: NSView {
         let finalStack = NSStackView(views: [label, stackView])
         finalStack.orientation = .vertical
         finalStack.spacing = 10
-        
-
-        
         addSubview(finalStack)
         NSLayoutConstraint.autoCreateAndInstallConstraints {
             finalStack.autoPinEdgesToSuperviewEdges(with: NSEdgeInsets(top: 10, left: 10, bottom: 0, right: 10))

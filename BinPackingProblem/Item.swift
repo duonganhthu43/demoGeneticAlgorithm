@@ -18,4 +18,10 @@ public struct Item {
     let color: CGColor?
     var width: Int
     var height: Int
+    var displayWidth: Int {
+        return width
+    }
+    var displayHeight: Int {
+        return height
+    }
 }

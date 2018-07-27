@@ -19,10 +19,12 @@ class ListChromosomePresentViewController: NSViewController, NSCollectionViewDat
     private let lstChromosomeDriver: Driver<[Chromosome]>
     private var lstChromosome: [Chromosome] = []
     private let titleHeader: String
+    private let showOriginalSize: Bool
     var counter = 0
-    init(title: String, items: [Item], lstChromosome: Driver<[Chromosome]>) {
+    init(title: String, lstChromosome: Driver<[Chromosome]>, showOriginalSize: Bool = false) {
         self.lstChromosomeDriver = lstChromosome
         self.titleHeader = title
+        self.showOriginalSize = showOriginalSize
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -40,9 +42,10 @@ class ListChromosomePresentViewController: NSViewController, NSCollectionViewDat
         super.viewDidLoad()
         
         lstChromosomeDriver.drive(onNext: { [weak self] (lstPopulation) in
-            self?.lstChromosome = lstPopulation
-            self?.chromosomeView = lstPopulation.map { (chro) -> ChromosomePresentView in
-                return ChromosomePresentView(chromosome: chro)
+            guard let strongSelf = self else { return }
+            strongSelf.lstChromosome = lstPopulation
+            strongSelf.chromosomeView = lstPopulation.map { (chro) -> ChromosomePresentView in
+                return ChromosomePresentView(chromosome: chro, showOriginalSize: strongSelf.showOriginalSize)
             }
             self?.collectionView.reloadData()
         }).disposed(by: self.disposeBag)
@@ -85,7 +88,7 @@ extension ListChromosomePresentViewController {
     func createCollectionView()-> NSCollectionView {
         let collectionView = NSCollectionView()
         collectionView.wantsLayer = true
-        collectionView.isSelectable = true
+        collectionView.isSelectable = false
         collectionView.allowsEmptySelection = false
         collectionView.delegate = self
         
@@ -93,8 +96,7 @@ extension ListChromosomePresentViewController {
         l.minimumInteritemSpacing = 10
         l.minimumLineSpacing = 10
         l.scrollDirection = NSCollectionView.ScrollDirection.vertical
-        l.sectionInset = NSEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        //l.itemSize = CGSize(width: 150, height: 150)
+        l.sectionInset = NSEdgeInsets(top: 10, left: 10, bottom: 0, right: 10)
         collectionView.collectionViewLayout = l
         return collectionView
     }
@@ -121,7 +123,8 @@ extension ListChromosomePresentViewController {
                         layout collectionViewLayout: NSCollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> NSSize {
         let chro = lstChromosome[indexPath.item]
-        return NSSize(width: chro.Size.0, height: chro.Size.1)
+        let size = showOriginalSize ? chro.OriginalSize : chro.Size
+        return NSSize(width: size.0, height: size.1)
     }
     
     func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> NSSize {

@@ -43,7 +43,6 @@ class LabelCollectionViewItemView: NSView {
             self.layer?.cornerRadius = 0
             layer!.backgroundColor = NSColor.lightGray.cgColor
         }
-        
     }
     
     // MARK: init

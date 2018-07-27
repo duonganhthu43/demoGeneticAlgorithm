@@ -24,7 +24,7 @@ public class Chromosome: Equatable {
     private var indexPart: [String]
     private var operatorPart: [OperatorToken]
     public var Expression: [String] {
-        let correctExp = Demo.correctExpression(input: constructExpression())
+        let correctExp = Utilities.correctExpression(input: constructExpression())
         self.indexPart = correctExp.filter({ (str) -> Bool in
             return Int(str) != nil
         })
@@ -43,6 +43,11 @@ public class Chromosome: Equatable {
     }
     
     public var Size: (Int,Int) {
+        let boundingRect = getDisplayBoundingRect()
+        return (boundingRect.width, boundingRect.height)
+    }
+    
+    public var OriginalSize: (Int,Int) {
         let boundingRect = getBoundingRect()
         return (boundingRect.width, boundingRect.height)
     }
@@ -77,14 +82,12 @@ public class Chromosome: Equatable {
     }
     
     func mutation(logWriter: PublishSubject<String>) -> Chromosome {
-        logWriter.onNext("MUTATION :  \n")
-        logWriter.onNext("  1 : rotateItem \n")
-        logWriter.onNext("  2 : randomExchange \n")
-        logWriter.onNext("  3 : moveOpt \n")
-        logWriter.onNext("  4 : complementOpt \n")
+        //logWriter.onNext("\n")
 
-        let randomNumber = Demo.generateRandom(lim: 3)
-        logWriter.onNext(String(format: "Choose random method : %d \n", arguments: [randomNumber]))
+        //logWriter.onNext("MUTATION :  \n")
+
+        let randomNumber = Utilities.generateRandom(lim: 3)
+        //logWriter.onNext(String(format: "Choose random method : %d \n", arguments: [randomNumber]))
         switch randomNumber {
         case 0 :
             rotateItem(logWriter: logWriter)
@@ -102,21 +105,31 @@ public class Chromosome: Equatable {
     }
     
     private func rotateItem(logWriter: PublishSubject<String>) {
-        let index = Demo.generateRandom(lim: items.count-1)
+        let index = Utilities.generateRandom(lim: items.count-1)
+//        logWriter.onNext(String(format: " ROTATE ITEM AT INDEX: %d \n" , index) )
+//        logWriter.onNext(String(format: "Before: %@  \n" ,Expression.joined(separator: " ")) )
+
         let height = items[index].height
         items[index].height = items[index].width
         items[index].width = height
+        //logWriter.onNext(String(format: "After: %@  \n" ,Expression.joined(separator: " ")) )
+
     }
     
     private func randomExchange(logWriter: PublishSubject<String>) {
-        let fromIdx = Demo.generateRandom(lim: indexPart.count - 1)
-        let toIdx = Demo.generateRandom(lim: indexPart.count - 1, exclude: [fromIdx])
+        let fromIdx = Utilities.generateRandom(lim: indexPart.count - 1)
+        let toIdx = Utilities.generateRandom(lim: indexPart.count - 1, exclude: [fromIdx])
+//        logWriter.onNext(String(format: " RANDOM EXCHANGE ITEM : from %d to %d \n" , fromIdx, toIdx) )
+//        logWriter.onNext(String(format: "Before: %@  \n" ,Expression.joined(separator: " ")) )
+
         let from = indexPart[fromIdx]
         let to = indexPart[toIdx]
         let temp = from
         self.indexPart[fromIdx] = to
         self.indexPart[toIdx] = temp
         _ = Expression
+        //logWriter.onNext(String(format: "After: %@  \n" ,Expression.joined(separator: " ")) )
+
     }
     
     
@@ -124,11 +137,15 @@ public class Chromosome: Equatable {
         // construct expression
         var myExp = self.Expression
         // randome pick operator
-        let randomIndex = Demo.generateRandom(lim: self.operatorPart.count - 1)
+        let randomIndex = Utilities.generateRandom(lim: self.operatorPart.count - 1)
         let myopt = self.operatorPart.sorted(by: { (l, r) -> Bool in
             return l.index < r.index
         })[randomIndex]
-        let randomPosition = Demo.generateRandom(lim: myExp.count - 1)
+        let randomPosition = Utilities.generateRandom(lim: myExp.count - 1)
+//        logWriter.onNext(String(format: " MOVE OPERATOR : from %d to %d \n" , myopt.index, myopt.index) )
+//        logWriter.onNext(String(format: "Before: %@  \n" ,myExp.joined(separator: " ")) )
+
+
         if randomPosition < myopt.index {
             myExp.remove(at:  myopt.index)
             myExp.insert(myopt.operatorType.rawValue, at: randomPosition)
@@ -136,7 +153,9 @@ public class Chromosome: Equatable {
             myExp.insert(myopt.operatorType.rawValue, at: randomPosition)
             myExp.remove(at:  myopt.index)
         }
-        myExp = Demo.correctExpression(input: myExp)
+        myExp = Utilities.correctExpression(input: myExp)
+//        logWriter.onNext(String(format: "After : %@  \n" ,myExp.joined(separator: " ")) )
+
         // part back to data
         self.indexPart = myExp.filter({ (str) -> Bool in
             return Int(str) != nil
@@ -151,8 +170,11 @@ public class Chromosome: Equatable {
     
     private func complementOpt(logWriter: PublishSubject<String>) {
         // randome pick operator
-        let randomIndex = Demo.generateRandom(lim: self.operatorPart.count - 1)
+        let randomIndex = Utilities.generateRandom(lim: self.operatorPart.count - 1)
+
         let myopt = self.operatorPart[randomIndex]
+//        logWriter.onNext(String(format: " COMPLEMENT OPERATOR : at %d with value %@ \n" , randomIndex, myopt.operatorType.rawValue) )
+
         self.operatorPart[randomIndex].operatorType = myopt.operatorType == OperatorType.Horizontal ? .Vertical : .Horizontal
     }
     
@@ -175,7 +197,7 @@ public class Chromosome: Equatable {
             } else {
                 let item2 = stack.pop()
                 let item1 = stack.pop()
-                if expression[i] == "V" {
+                if expression[i] == OperatorType.Vertical.rawValue {
                     stack.push(Item(width: max(item1!.width, item2!.width), height: item1!.height + item2!.height, name: item1!.name + item2!.name))
                 } else {
                     stack.push(Item(width: item1!.width + item2!.width, height: max(item1!.height, item2!.height), name: item1!.name + item2!.name))
@@ -184,6 +206,29 @@ public class Chromosome: Equatable {
         }
         return stack.top!
     }
+    
+    private func getDisplayBoundingRect() -> Item {
+        let items = self.items.map { (item) -> Item in
+            return Item(width: item.displayWidth, height: item.displayHeight, name: item.name, color: item.color)
+        }
+        let expression = Expression
+        var stack = Stack<Item>()
+        for i in 0..<expression.count {
+            if let itemIndex = Int(expression[i]) {
+                stack.push(items[itemIndex])
+            } else {
+                let item2 = stack.pop()
+                let item1 = stack.pop()
+                if expression[i] == OperatorType.Vertical.rawValue {
+                    stack.push(Item(width: max(item1!.width, item2!.width), height: item1!.height + item2!.height, name: item1!.name + item2!.name))
+                } else {
+                    stack.push(Item(width: item1!.width + item2!.width, height: max(item1!.height, item2!.height), name: item1!.name + item2!.name))
+                }
+            }
+        }
+        return stack.top!
+    }
+
     
     private func calculateArea(item: Item) -> Int {
         return item.height * item.width

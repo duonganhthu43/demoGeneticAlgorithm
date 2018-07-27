@@ -16,6 +16,8 @@ class ChromosomePresentView: NSView {
             needsDisplay = true
         }
     }
+    
+    private var showOriginalSize = false
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = NSColor(cgColor: CGColor.clear)
@@ -25,9 +27,10 @@ class ChromosomePresentView: NSView {
         super.init(coder: aDecoder)
     }
     
-    convenience init(chromosome: Chromosome) {
+    convenience init(chromosome: Chromosome, showOriginalSize: Bool = false) {
         self.init(frame: CGRect.zero)
         self.chromosome = chromosome
+        self.showOriginalSize = showOriginalSize
         backgroundColor = NSColor.white
         self.layer?.borderWidth = 0.5
         self.layer?.borderColor = NSColor.black.withAlphaComponent(0.5).cgColor
@@ -35,9 +38,11 @@ class ChromosomePresentView: NSView {
         guard let chromosome = self.chromosome else {
             return
         }
-        let itemsView = chromosome.items.map { item -> NSView in
+        let items = chromosome.items
+        let itemsView = items.map { item -> NSView in
             let itemView = NSView()
-            itemView.autoSetDimensions(to: CGSize(width: item.width, height: item.height))
+            //            itemView.autoSetDimensions(to: CGSize(width: showOriginalSize ? item.displayWidth :  item.displayWidth, height: showOriginalSize ? item.height
+            //                : item.displayHeight))
             itemView.backgroundColor = NSColor(cgColor: item.color!)
             return itemView
         }
@@ -51,16 +56,24 @@ class ChromosomePresentView: NSView {
                 let right = stack.pop()
                 let stackView = NSStackView(views: [left!, right!])
                 stackView.spacing = 0
-                stackView.alignment = expression[i] == "V" ?NSLayoutConstraint.Attribute.bottom: NSLayoutConstraint.Attribute.right
-                stackView.orientation = expression[i] == "V" ?NSUserInterfaceLayoutOrientation.vertical : NSUserInterfaceLayoutOrientation.horizontal
+                stackView.alignment = expression[i] == OperatorType.Vertical.rawValue ?NSLayoutConstraint.Attribute.bottom: NSLayoutConstraint.Attribute.right
+                stackView.orientation = expression[i] ==  OperatorType.Vertical.rawValue ?NSUserInterfaceLayoutOrientation.vertical : NSUserInterfaceLayoutOrientation.horizontal
                 stack.push(stackView)
             }
         }
         let finalStackView = stack.top
         finalStackView?.backgroundColor = NSColor.clear
         addSubview(finalStackView!)
-            NSLayoutConstraint.autoCreateAndInstallConstraints {
-                finalStackView?.autoPinEdgesToSuperviewEdges()
+        NSLayoutConstraint.autoCreateAndInstallConstraints {
+            finalStackView?.autoPinEdgesToSuperviewEdges()
+            for i in 0..<itemsView.count {
+                itemsView[i].autoSetDimensions(to: CGSize(width: showOriginalSize ? items[i].displayWidth :  items[i].displayWidth, height: showOriginalSize ? items[i].height
+                    : items[i].displayHeight))
             }
+        }
     }
+//    override public func draw(_ dirtyRect: NSRect) {
+//
+//    }
+    
 }
