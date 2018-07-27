@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import RxSwift
+import RxCocoa
 public enum OperatorType: String {
     case Vertical = "V"
     case Horizontal = "H"
@@ -35,10 +37,23 @@ class GeneticProcess {
     private static let crossoverRate = 0.3
     private static let tournamentSize = 5
     var population: [Chromosome] = []
+    private var populationSubject: PublishSubject<[Chromosome]> = PublishSubject()
+    private var mutationsSubject: PublishSubject<[Chromosome]> = PublishSubject()
+    private var mutationLog: PublishSubject<String> = PublishSubject()
+    
+    public var mutationLogDriver: Driver<String> {
+        return mutationLog.asDriver(onErrorJustReturn: "ERROR ")
+    }
+
+    public var mutationsDriver: Driver<[Chromosome]> {
+        return mutationsSubject.asDriver(onErrorJustReturn: [])
+    }
+    public var populationDriver: Driver<[Chromosome]> {
+        return populationSubject.asDriver(onErrorJustReturn: [])
+    }
     
 
     init(items: [Item]) {
-        // init population: 2* size of items
         let populationSize = 2 * items.count
         for _ in 0..<populationSize {
             population.append(Chromosome(exp: Demo.generateExpression(quantity: items.count), items: items))
@@ -47,6 +62,7 @@ class GeneticProcess {
         population.sort { (left, right) -> Bool in
            return left.Fitness > right.Fitness
         }
+        populationSubject.onNext(population)
     }
     
     func executeSingleRound()-> [Chromosome] {
@@ -64,15 +80,22 @@ class GeneticProcess {
         for i in 0..<newChild.count {
             let r = CGFloat.random()
             if r < 0.7 {
-                newChild[i] = newChild[i].mutation()
+                newChild[i] = newChild[i].mutation(logWriter: mutationLog)
             }
         }
+        newChild.sort { (l, r) -> Bool in
+            l.Fitness > r.Fitness
+        }
+        
+        mutationsSubject.onNext(newChild)
+        
         population.append(contentsOf: newChild)
         population = population.unique
         population.sort { (l, r) -> Bool in
             l.Fitness > r.Fitness
         }
         population = Array(population[0...(2*population[0].items.count)])
+        populationSubject.onNext(population)
         return population
     }
     func execute() {
@@ -93,7 +116,7 @@ class GeneticProcess {
             for i in 0..<newChild.count {
                 let r = CGFloat.random()
                 if r < 0.7 {
-                   newChild[i] = newChild[i].mutation()
+                   newChild[i] = newChild[i].mutation(logWriter: mutationLog)
                 }
             }
             population.append(contentsOf: newChild)
@@ -101,6 +124,7 @@ class GeneticProcess {
                 l.Fitness > r.Fitness
             }
             population = Array(population[0...(2*population[0].items.count)])
+            populationSubject.onNext(population)
             print("VALUE: ", endCondition)
             print("FITNESS " , population[0].Fitness)
             print("AREA " , population[0].Area)

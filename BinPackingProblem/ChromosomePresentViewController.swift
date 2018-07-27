@@ -11,7 +11,11 @@ import Cocoa
 import PureLayout
 import RxSwift
 class ChromosomePresentView: NSView {
-    private var chromosome: Chromosome?
+    var chromosome: Chromosome? {
+        didSet {
+            needsDisplay = true
+        }
+    }
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = NSColor(cgColor: CGColor.clear)
@@ -27,9 +31,7 @@ class ChromosomePresentView: NSView {
         backgroundColor = NSColor.white
         self.layer?.borderWidth = 0.5
         self.layer?.borderColor = NSColor.black.withAlphaComponent(0.5).cgColor
-    }
-    
-    override public func draw(_ dirtyRect: NSRect) {
+        
         guard let chromosome = self.chromosome else {
             return
         }
@@ -56,10 +58,9 @@ class ChromosomePresentView: NSView {
         }
         let finalStackView = stack.top
         finalStackView?.backgroundColor = NSColor.clear
-         addSubview(finalStackView!)
-        NSLayoutConstraint.autoCreateAndInstallConstraints {
-            //finalStackView?.autoCenterInSuperview()
-            finalStackView?.autoPinEdgesToSuperviewEdges()
-        }
+        addSubview(finalStackView!)
+            NSLayoutConstraint.autoCreateAndInstallConstraints {
+                finalStackView?.autoPinEdgesToSuperviewEdges()
+            }
     }
 }

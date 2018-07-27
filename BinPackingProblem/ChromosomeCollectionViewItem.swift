@@ -33,12 +33,13 @@ class ChromosomeCollectionViewItem: NSCollectionViewItem {
             // create new view
             let newView = NSView()
             newView.addSubview(chromosomeView)
-            chromosomeView.autoresizingMask = [.width, .height]
+            //chromosomeView.autoresizingMask = [.width, .height]
             chromosomeView.autoCenterInSuperview()
             if mainStackView.detachedViews.count > 1 {
                 let oldView = mainStackView.detachedViews[0]
                 mainStackView.replaceSubview(oldView, with: chromosomeView)
             } else {
+                mainStackView.subviews.removeAll()
                 mainStackView.insertView(chromosomeView, at: 0, in: .top)
             }
         }
@@ -47,8 +48,6 @@ class ChromosomeCollectionViewItem: NSCollectionViewItem {
 
     
     // MARK: view properties
-    
-    var label:NSTextField!
     var mainStackView: NSStackView!
     
     // MARK: NSViewController
@@ -56,17 +55,10 @@ class ChromosomeCollectionViewItem: NSCollectionViewItem {
     override func loadView() {
         self.view = LabelCollectionViewItemView(frame: NSRect(x: 0, y: 0, width: 200, height: 30))
         self.view.wantsLayer = true
-        label = NSTextField()
-        label.isEditable = false
-        label.isSelectable = false
-        label.drawsBackground = false
-        label.isBezeled = false
-        label.alignment = .center
-        label.font = NSFont.systemFont(ofSize: 20)
-        
+
         mainStackView = NSStackView(views: [])
         mainStackView.orientation = .vertical
-        mainStackView.backgroundColor = NSColor.clear
+        mainStackView.backgroundColor = NSColor.white
         self.view.addSubview(mainStackView)
         NSLayoutConstraint.autoCreateAndInstallConstraints {
             mainStackView.autoPinEdgesToSuperviewEdges()

@@ -22,6 +22,7 @@
 		6CDE70E22104C14400D54A6D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6CDE70E12104C14400D54A6D /* Assets.xcassets */; };
 		6CDE70E52104C14400D54A6D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6CDE70E32104C14400D54A6D /* Main.storyboard */; };
 		6CDE70EE2104C8DC00D54A6D /* PolishExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDE70ED2104C8DC00D54A6D /* PolishExpression.swift */; };
+		6CEFA660210B00F700B55639 /* ListChromosomePresentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CEFA65F210B00F700B55639 /* ListChromosomePresentViewController.swift */; };
 		D02494D6D425F41354538F67 /* Pods_BinPackingProblem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50739226800747ABE575E2B8 /* Pods_BinPackingProblem.framework */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +47,7 @@
 		6CDE70E62104C14400D54A6D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6CDE70E72104C14400D54A6D /* BinPackingProblem.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BinPackingProblem.entitlements; sourceTree = "<group>"; };
 		6CDE70ED2104C8DC00D54A6D /* PolishExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolishExpression.swift; sourceTree = "<group>"; };
+		6CEFA65F210B00F700B55639 /* ListChromosomePresentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListChromosomePresentViewController.swift; sourceTree = "<group>"; };
 		83ADEE97B30053704F9BE2ED /* Pods-BinPackingProblem.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BinPackingProblem.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BinPackingProblem/Pods-BinPackingProblem.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -95,6 +97,7 @@
 				6C151B43210A5946007B358A /* Footer.xib */,
 				6CDE70DD2104C14300D54A6D /* AppDelegate.swift */,
 				6CDE70DF2104C14300D54A6D /* ViewController.swift */,
+				6CEFA65F210B00F700B55639 /* ListChromosomePresentViewController.swift */,
 				6C151B39210A27E7007B358A /* ChromosomeCollectionViewItem.swift */,
 				6C151B3B210A288E007B358A /* LabelCollectionViewItem.swift */,
 				6C329E3221096C2A007795AA /* ChromosomePresentViewController.swift */,
@@ -216,11 +219,13 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-BinPackingProblem/Pods-BinPackingProblem-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/PureLayout/PureLayout.framework",
+				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PureLayout.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -243,6 +248,7 @@
 				6CD232E02108B528003CE1EA /* Chromosome.swift in Sources */,
 				6C329E36210976FF007795AA /* InputPresentView.swift in Sources */,
 				6C151B46210A5962007B358A /* HeaderView.swift in Sources */,
+				6CEFA660210B00F700B55639 /* ListChromosomePresentViewController.swift in Sources */,
 				6CDE70EE2104C8DC00D54A6D /* PolishExpression.swift in Sources */,
 				6CDE70E02104C14300D54A6D /* ViewController.swift in Sources */,
 				6CDE70DE2104C14300D54A6D /* AppDelegate.swift in Sources */,

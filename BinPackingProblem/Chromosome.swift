@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import RxCocoa
+import RxSwift
 public class Chromosome: Equatable {
     public static func == (lhs: Chromosome, rhs: Chromosome) -> Bool {
         return lhs.Expression == rhs.Expression && lhs.Area == rhs.Area
@@ -74,32 +76,39 @@ public class Chromosome: Equatable {
         return (Chromosome(opt: crossOverOperaterP.0, index: crossOverIndexP.0, items: self.items), Chromosome(opt: crossOverOperaterP.1, index: crossOverIndexP.1, items: with.items))
     }
     
-    func mutation() -> Chromosome {
+    func mutation(logWriter: PublishSubject<String>) -> Chromosome {
+        logWriter.onNext("MUTATION :  \n")
+        logWriter.onNext("  1 : rotateItem \n")
+        logWriter.onNext("  2 : randomExchange \n")
+        logWriter.onNext("  3 : moveOpt \n")
+        logWriter.onNext("  4 : complementOpt \n")
+
         let randomNumber = Demo.generateRandom(lim: 3)
+        logWriter.onNext(String(format: "Choose random method : %d \n", arguments: [randomNumber]))
         switch randomNumber {
         case 0 :
-            rotateItem()
+            rotateItem(logWriter: logWriter)
             return self
         case 1:
-            randomExchange()
+            randomExchange(logWriter: logWriter)
             return self
         case 2:
-            moveOpt()
+            moveOpt(logWriter: logWriter)
             return self
         default:
-            complementOpt()
+            complementOpt(logWriter: logWriter)
             return self
         }
     }
     
-    private func rotateItem() {
+    private func rotateItem(logWriter: PublishSubject<String>) {
         let index = Demo.generateRandom(lim: items.count-1)
         let height = items[index].height
         items[index].height = items[index].width
         items[index].width = height
     }
     
-    private func randomExchange() {
+    private func randomExchange(logWriter: PublishSubject<String>) {
         let fromIdx = Demo.generateRandom(lim: indexPart.count - 1)
         let toIdx = Demo.generateRandom(lim: indexPart.count - 1, exclude: [fromIdx])
         let from = indexPart[fromIdx]
@@ -111,7 +120,7 @@ public class Chromosome: Equatable {
     }
     
     
-    private func moveOpt() {
+    private func moveOpt(logWriter: PublishSubject<String>) {
         // construct expression
         var myExp = self.Expression
         // randome pick operator
@@ -140,7 +149,7 @@ public class Chromosome: Equatable {
         }
     }
     
-    private func complementOpt() {
+    private func complementOpt(logWriter: PublishSubject<String>) {
         // randome pick operator
         let randomIndex = Demo.generateRandom(lim: self.operatorPart.count - 1)
         let myopt = self.operatorPart[randomIndex]
@@ -193,5 +202,9 @@ public class Chromosome: Equatable {
     private func fitness() -> Float {
         let boundingRect = getBoundingRect()
         return 1000000.0/Float((calculateArea(item: boundingRect) + penalty(item: boundingRect)))
+    }
+    
+    func getViewPresent() -> ChromosomePresentView {
+        return ChromosomePresentView(chromosome: self)
     }
 }

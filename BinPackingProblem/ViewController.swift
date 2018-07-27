@@ -9,14 +9,39 @@
 import Cocoa
 import PureLayout
 import RxSwift
+import RxCocoa
 
-class ViewController: NSViewController, NSCollectionViewDataSource, NSCollectionViewDelegate, NSCollectionViewDelegateFlowLayout  {
-    lazy var collectionView = createCollectionView()
+
+class ViewController: NSViewController {
+    let disposeBag = DisposeBag()
     var chromosomeView: [NSView] = []
     var lstChromosome: [Chromosome] = []
     var items: [Item] = []
+    let process: GeneticProcess
     let demo = Demo()
-
+    var counter = 0
+    var lstMutationController: ListChromosomePresentViewController
+    var lstPopulationController: ListChromosomePresentViewController
+    var inputView : InputPresentView
+    
+    init() {
+        items = demo.generateItems(quantity: 10)
+        process = GeneticProcess(items: items)
+        lstMutationController = ListChromosomePresentViewController(title: "Mutation ", items: items, lstChromosome: process.mutationsDriver)
+        lstPopulationController = ListChromosomePresentViewController(title: "Population ", items: items, lstChromosome: process.populationDriver)
+        inputView = InputPresentView(items: items)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        items = demo.generateItems(quantity: 10)
+        process = GeneticProcess(items: items)
+        lstMutationController = ListChromosomePresentViewController(title: "Mutation ", items: items, lstChromosome: process.mutationsDriver)
+        lstPopulationController = ListChromosomePresentViewController(title: "Population ", items: items, lstChromosome: process.populationDriver)
+        inputView = InputPresentView(items: items)
+        super.init(coder: coder)
+    }
+    
     override func viewDidAppear() {
         let presOptions: NSApplication.PresentationOptions = ([.fullScreen,.autoHideMenuBar])
         let optionsDictionary = [NSView.FullScreenModeOptionKey.fullScreenModeApplicationPresentationOptions :
@@ -26,74 +51,82 @@ class ViewController: NSViewController, NSCollectionViewDataSource, NSCollection
     }
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
-        items = demo.generateItems(quantity: 10)
-        let process = GeneticProcess(items: items)
-        let population = process.executeSingleRound()
-        lstChromosome = population
-        // create horizontalStack
-        let chroViews = population.map { (chro) -> ChromosomePresentView in
-            return ChromosomePresentView(chromosome: chro)
-        }
-        chromosomeView = chroViews
-        self.view.wantsLayer = true
+        addChildViewController(lstPopulationController)
+        addChildViewController(lstMutationController)
+        let leftView = CustomStackView()
+        leftView.instricsicWidth = 4
+        leftView.orientation = .vertical
+        leftView.distribution = .fillEqually
+        leftView.spacing = 10
+        leftView.addArrangedSubview(inputView)
+        leftView.addArrangedSubview(lstPopulationController.view)
+        leftView.addArrangedSubview(lstMutationController.view)
+//        lstPopulationController.view.autoresizingMask = [.width, .height]
+//        lstMutationController.view.autoresizingMask = [.width, .height]
         
-        let scrollView:NSScrollView = {
-            let v = NSScrollView(frame: NSRect.zero)
+        let btn = createButton()
+        
+        let buttonStack = CustomStackView()
+        buttonStack.instricsicWidth = 1
+        buttonStack.orientation = .horizontal
+        buttonStack.alignment = .centerX
+        buttonStack.addArrangedSubview(btn)
+        
+        let leftStackOuterView = CustomStackView()
+        leftStackOuterView.instricsicWidth = 3
+        leftStackOuterView.orientation = .vertical
+        leftStackOuterView.distribution = .gravityAreas
+        leftStackOuterView.addArrangedSubview(buttonStack)
+        leftStackOuterView.addArrangedSubview(leftView)
+
+        // Notify Child View Controller
+        lstPopulationController.view.viewDidMoveToSuperview()
+        lstMutationController.view.viewDidMoveToSuperview()
+
+        let rightView = CustomStackView()
+        rightView.instricsicWidth = 1
+        rightView.backgroundColor = NSColor.black
+        
+        
+        
+        let logTextField = NSTextView()
+        logTextField.isEditable = false
+        logTextField.isFieldEditor = false
+        logTextField.drawsBackground = false
+        logTextField.font = NSFont.systemFont(ofSize: 15)
+        logTextField.backgroundColor = NSColor.black
+        logTextField.textColor = NSColor.white
+        
+        let scrollTextView :NSScrollView = {
+            let v = NSScrollView()
             v.translatesAutoresizingMaskIntoConstraints = false
             v.hasVerticalRuler = false
             v.hasVerticalScroller = true
             return v
         }()
-        collectionView.register(ChromosomeCollectionViewItem.self, forItemWithIdentifier: NSUserInterfaceItemIdentifier("item"))
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        scrollView.documentView = collectionView
-        let btn = createButton()
-        let stackView = NSStackView()
+        scrollTextView.documentView = logTextField
+        scrollTextView.backgroundColor = NSColor.red
+
+        
+        rightView.addArrangedSubview(scrollTextView)
+        
+        
+        
+        process.mutationLogDriver.drive(onNext: { (text) in
+            logTextField.string = logTextField.string + text
+        }).disposed(by: disposeBag)
+        
+        let stackView = NSStackView(views: [leftStackOuterView, rightView])
         stackView.orientation = .horizontal
         stackView.distribution = .fillProportionally
-        stackView.addArrangedSubview(btn)
-        stackView.addArrangedSubview(scrollView)
         view.addSubview(stackView)
         NSLayoutConstraint.autoCreateAndInstallConstraints {
-            stackView.autoPinEdgesToSuperviewEdges()
+            stackView.autoPinEdgesToSuperviewEdges(with: NSEdgeInsets.init(top: 10, left: 10, bottom: 10, right: 10))
+            rightView.autoMatch(.height, to: .height, of: stackView, withMultiplier: 1)
+            leftStackOuterView.autoMatch(.height, to: .height, of: stackView, withMultiplier: 1)
+            logTextField.autoMatch(.height, to: .height, of: stackView, withMultiplier: 1)
         }
-        //view.pbbPlace(scrollView, at:(0,0,0,0))
-        
-        
-//        let demo = Demo()
-//        let leftView = CustomStackView()
-//        leftView.orientation = .vertical
-//        leftView.instricsicWidth = 3
-//        let rightView = CustomStackView()
-//        rightView.instricsicWidth = 1
-//        rightView.backgroundColor = NSColor.green
-//
-//        let stackView = NSStackView(views: [leftView, rightView])
-//        stackView.orientation = .horizontal
-//        stackView.distribution = .fillProportionally
-//        view.addSubview(stackView)
-//        let items = demo.generateItems(quantity: 10)
-//        let process = GeneticProcess(items: items)
-//        let population = process.executeSingleRound()
-//
-//        // create horizontalStack
-//        let chroViews = population.map { (chro) -> ChromosomePresentView in
-//            return ChromosomePresentView(chromosome: chro)
-//        }
-//        let chroStack = NSStackView(views: chroViews)
-//        chroStack.orientation = .horizontal
-//        stackView.distribution = .fillProportionally
-//        let inputView = InputPresentView(items: items)
-//        leftView.addView(inputView, in: .top)
-//        leftView.addArrangedSubview(chroStack)
-//        NSLayoutConstraint.autoCreateAndInstallConstraints {
-//            stackView.autoPinEdgesToSuperviewEdges(with: NSEdgeInsets(top: 10, left: 10, bottom: 0, right: 10))
-//            rightView.autoMatch(.height, to: .height, of: stackView, withMultiplier: 1)
-//            leftView.autoMatch(.height, to: .height, of: stackView, withMultiplier: 1)
-//        }
     }
 
 
@@ -116,91 +149,14 @@ extension ViewController {
         return button
     }
     
+    func delay(_ delay:Double, closure:@escaping ()->()) {
+        DispatchQueue.main.asyncAfter(
+            deadline: DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)
+    }
+    
     @objc func action() {
-        for _ in 0...10 {
-        let process = GeneticProcess(items: items)
-        let population = process.executeSingleRound()
-        lstChromosome = population
-        collectionView.reloadData()
-            
-        }
+        self.process.executeSingleRound()
     }
-    
-    func createCollectionView()-> NSCollectionView {
-        let collectionView = NSCollectionView()
-        collectionView.wantsLayer = true
-        //collectionView.layer!.backgroundColor = NSColor.blue.withAlphaComponent(0.2).cgColor
-        collectionView.isSelectable = true
-        collectionView.allowsEmptySelection = false
-        collectionView.delegate = self
-        
-        let l = NSCollectionViewFlowLayout()
-        l.minimumInteritemSpacing = 10
-        l.minimumLineSpacing = 10
-        l.scrollDirection = NSCollectionView.ScrollDirection.vertical
-        l.sectionInset = NSEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        //l.itemSize = CGSize(width: 150, height: 150)
-        collectionView.collectionViewLayout = l
-        return collectionView
-    }
-}
-
-extension ViewController {
-    // MARK: NSCollectionViewDataSource
-    
-    func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        return chromosomeView.count
-        //return strings.count * 5
-    }
-    
-    func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-        let chro =  lstChromosome[indexPath.item]
-        let lo = LabelObject(title: String.init(format: "Area: %d \n Width: %d Height: %d", chro.Area, chro.Size.0, chro.Size.1))
-        let item = collectionView.makeItem(withIdentifier:NSUserInterfaceItemIdentifier("item"), for: indexPath) as! ChromosomeCollectionViewItem
-        item.labelObject = lo
-        item.chromosomeView = chromosomeView[indexPath.item]
-        return item
-    }
-//
-    func collectionView(_ collectionView: NSCollectionView,
-                        layout collectionViewLayout: NSCollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> NSSize {
-        let chro = lstChromosome[indexPath.item]
-        return NSSize(width: chro.Size.0, height: (chro.Size.1))
-    }
-    
-    func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> NSSize {
-        return NSSize(width: 0, height: 20)
-    }
-    
-    func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, referenceSizeForFooterInSection section: Int) -> NSSize {
-        return NSSize(width: 0, height: 20)
-    }
-    
-    func numberOfSectionsInCollectionView(collectionView: NSCollectionView) -> Int {
-        return 1
-    }
-    
-    func collectionView(_ collectionView: NSCollectionView, viewForSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind, at indexPath: IndexPath) -> NSView {
-        var nibName: String?
-        if kind == NSCollectionView.SupplementaryElementKind.sectionHeader {
-            nibName = "Header"
-        } else if kind == NSCollectionView.SupplementaryElementKind.sectionFooter {
-            nibName = "Footer"
-        }
-        let view = collectionView.makeSupplementaryView(ofKind: kind, withIdentifier: NSUserInterfaceItemIdentifier(rawValue: nibName!), for: indexPath)
-        
-        view.wantsLayer = true
-        //view.layer?.backgroundColor = NSColor.green.cgColor
-        
-        if let view = view as? HeaderView {
-            view.titleTextField?.stringValue = "Custom Header"
-        } else if let view = view as? HeaderView {
-            view.titleTextField?.stringValue = "Custom Footer"
-        }
-        return view
-    }
-    // MARK: NSCollectionViewDelegate
 }
 
 extension NSView {

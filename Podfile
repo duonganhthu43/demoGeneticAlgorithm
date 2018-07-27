@@ -8,6 +8,5 @@ target 'BinPackingProblem' do
   # Pods for BinPackingProblem
   pod 'PureLayout'
   pod 'RxSwift'
-
-
+  pod 'RxCocoa'
 end
